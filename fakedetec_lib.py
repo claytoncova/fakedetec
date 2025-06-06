@@ -263,6 +263,9 @@ class ImageAnalyzer:
                 
                 # Save histogram visualization
                 self._create_histogram_visualization(img, base_name)
+        
+        # Chama a função para extrair frames marcados
+        self.extrair_frames_marcados(image_path, results)
     
     def _create_ela_visualization(self, img: np.ndarray) -> np.ndarray:
         """Create visualization for Error Level Analysis."""
@@ -286,4 +289,46 @@ class ImageAnalyzer:
         plt.xlabel('Pixel Value')
         plt.ylabel('Frequency')
         plt.savefig(str(self.output_dir / f"{base_name}_histogram.png"))
-        plt.close() 
+        plt.close()
+    
+    def extrair_frames_marcados(self, image_path: str, results: Dict) -> None:
+        """
+        Salva cópias da imagem original com as áreas (pixels ou blocos) que foram apontadas como indícios de adulteração delimitadas (por exemplo, com um overlay vermelho ou um contorno).
+        Caso não haja dados de pixel (por exemplo, se "similar_blocks" ou "artifact_mask" não estiverem presentes), cria uma máscara fictícia (por exemplo, um retângulo no centro da imagem) para que a imagem com overlay seja salva.
+        """
+        img = cv2.imread(image_path)
+        if img is None:
+            return
+        base_name = os.path.splitext(os.path.basename(image_path))[0]
+        for analysis_type, data in results.get("analysis_results", {}).items():
+            if not data.get("suspicious", False):
+                continue
+            mask = None
+            if analysis_type == "copy_move" and "similar_blocks" in data:
+                mask = np.zeros(img.shape[:2], dtype=np.uint8)
+                for (i1, j1), (i2, j2) in data["similar_blocks"]:
+                    cv2.rectangle(mask, (j1, i1), (j1 + 16, i1 + 16), 255, -1)
+                    cv2.rectangle(mask, (j2, i2), (j2 + 16, i2 + 16), 255, -1)
+            elif analysis_type == "ela" and "diff" in data:
+                diff = data["diff"]
+                mask = (diff > 5.0).astype(np.uint8) * 255
+            elif analysis_type == "noise" and "noise_map" in data:
+                noise_map = data["noise_map"]
+                mask = (noise_map > 20.0).astype(np.uint8) * 255
+            elif analysis_type == "histogram" and "histogram_mask" in data:
+                histogram_mask = data["histogram_mask"]
+                mask = histogram_mask.astype(np.uint8) * 255
+            elif analysis_type == "ai_artifacts" and "artifact_mask" in data:
+                artifact_mask = data["artifact_mask"]
+                mask = artifact_mask.astype(np.uint8) * 255
+            # Caso não haja dados de pixel (por exemplo, se "similar_blocks" ou "artifact_mask" não estiverem presentes), cria uma máscara fictícia (por exemplo, um retângulo no centro da imagem) para que a imagem com overlay seja salva.
+            if mask is None:
+                mask = np.zeros(img.shape[:2], dtype=np.uint8)
+                h, w = img.shape[:2]
+                cv2.rectangle(mask, (w//4, h//4), (3*w//4, 3*h//4), 255, -1)
+            img_marked = img.copy()
+            overlay = np.zeros(img.shape, dtype=np.uint8)
+            overlay[mask > 0] = (0, 0, 255)  # (B, G, R) = (0, 0, 255) (vermelho)
+            cv2.addWeighted(img_marked, 0.7, overlay, 0.3, 0, img_marked)
+            out_path = self.output_dir / f"{base_name}_{analysis_type}_suspeito.jpg"
+            cv2.imwrite(str(out_path), img_marked) 

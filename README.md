@@ -1,86 +1,88 @@
-# 🕵️‍♂️ FakeDetec - Image Forensics Analysis Tool
+# 🕵️‍♂️ FakeDetec - Ferramenta de Análise Forense de Imagens
 
-## 📝 Description
-FakeDetec is a powerful command-line tool for detecting image manipulation and AI-generated content. It analyzes both image data and metadata to identify potential signs of tampering, editing, or artificial generation.
+## 📝 Descrição
+FakeDetec é uma poderosa ferramenta de linha de comando para detecção de manipulação de imagens e conteúdo gerado por IA. Ela analisa tanto os dados da imagem quanto os metadados para identificar potenciais sinais de adulteração, edição ou geração artificial.
 
-## ✨ Features
-- 🔍 Metadata analysis (EXIF data, creation tools, timestamps)
-- 🎨 Image manipulation detection
-- 🤖 AI-generated content detection
-- 📊 Error Level Analysis (ELA)
-- 🎯 Copy-move detection
-- 📈 Noise pattern analysis
-- 🎨 Color histogram analysis
-- 📝 Detailed report generation
-- 🎨 Colored console output with ASCII art
+## ✨ Funcionalidades
+- 🔍 Análise de metadados (dados EXIF, ferramentas de criação, timestamps)
+- 🎨 Detecção de manipulação de imagem
+- 🤖 Detecção de conteúdo gerado por IA
+- 📊 Análise de Nível de Erro (ELA)
+- 🎯 Detecção de cópia e colagem
+- 📈 Análise de padrões de ruído
+- 🎨 Análise de histograma de cores
+- 📝 Geração de relatórios detalhados
+- 🎨 Saída colorida no console com arte ASCII
+- 🖼️ Extração de frames com marcações de áreas suspeitas
 
-## 🚀 Installation
+## 🚀 Instalação
 
-1. Clone the repository:
+1. Clone o repositório:
 ```bash
-git clone https://github.com/yourusername/fakedetec.git
+git clone https://github.com/seuusuario/fakedetec.git
 cd fakedetec
 ```
 
-2. Create a virtual environment (recommended):
+2. Crie um ambiente virtual (recomendado):
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # No Windows: venv\Scripts\activate
 ```
 
-3. Install dependencies:
+3. Instale as dependências:
 ```bash
 pip install -r requirements.txt
 ```
 
-## 💻 Usage
+## 💻 Uso
 
-Basic usage:
+Uso básico:
 ```bash
-python main.py analyze path/to/image.jpg
+python main.py analisar caminho/para/imagem.jpg
 ```
 
-Analyze multiple images:
+Analisar múltiplas imagens:
 ```bash
-python main.py analyze path/to/directory
+python main.py analisar caminho/para/diretorio
 ```
 
-Get detailed help:
+Obter ajuda detalhada:
 ```bash
-python main.py --help
+python main.py --ajuda
 ```
 
-## 📊 Output
-The analysis results are saved in the `output` directory, including:
-- Detailed analysis reports
-- Visual markers of detected manipulations
-- Statistical data
-- Metadata analysis
+## 📊 Saída
+Os resultados da análise são salvos no diretório `output`, incluindo:
+- Relatórios detalhados de análise
+- Marcadores visuais de manipulações detectadas
+- Dados estatísticos
+- Análise de metadados
+- Frames extraídos com marcações de áreas suspeitas
 
-## 🛠️ Technical Details
-The tool uses various techniques for detection:
-- Error Level Analysis (ELA)
-- EXIF metadata analysis
-- Noise pattern analysis
-- Color histogram analysis
-- Copy-move detection
-- AI generation artifacts detection
+## 🛠️ Detalhes Técnicos
+A ferramenta utiliza várias técnicas para detecção:
+- Análise de Nível de Erro (ELA)
+- Análise de metadados EXIF
+- Análise de padrões de ruído
+- Análise de histograma de cores
+- Detecção de cópia e colagem
+- Detecção de artefatos de geração por IA
 
-## 📚 Dependencies
-- Pillow: Image processing
-- OpenCV: Computer vision operations
-- scikit-image: Advanced image processing
-- numpy: Numerical operations
-- exif: Metadata extraction
-- colorama & rich: Terminal formatting
-- pywavelets: Wavelet analysis
-- matplotlib: Visualization
+## 📚 Dependências
+- Pillow: Processamento de imagens
+- OpenCV: Operações de visão computacional
+- scikit-image: Processamento avançado de imagens
+- numpy: Operações numéricas
+- exif: Extração de metadados
+- colorama & rich: Formatação do terminal
+- pywavelets: Análise wavelet
+- matplotlib: Visualização
 
-## 🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 🤝 Contribuindo
+Contribuições são bem-vindas! Por favor, sinta-se à vontade para enviar um Pull Request.
 
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📄 Licença
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
 
-## ⚠️ Disclaimer
-This tool is for educational and research purposes. Results should be verified by human experts for critical applications. 
+## ⚠️ Aviso Legal
+Esta ferramenta é para fins educacionais e de pesquisa. Os resultados devem ser verificados por especialistas humanos para aplicações críticas. 
